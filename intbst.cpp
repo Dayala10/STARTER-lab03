@@ -42,6 +42,13 @@ bool IntBST::insert(int value) {
         return false;
     }
 
+    if(root->info > value){
+        return insert(value, root->left);
+    }
+    else if(root->info < value){
+        return insert(value, root->right);
+    }
+
     return insert(value, root); //true or false, insertion
 }
 
@@ -283,7 +290,7 @@ int IntBST::getSuccessor(int value) const{
 // returns true if the node exist and was deleted or false if the node does not exist
 bool IntBST::remove(int value){
     Node* curr = getNodeFor(value, root);
-    
+
     if (curr == nullptr)
     {
         return false; //if no node matches target value, return false
@@ -384,8 +391,6 @@ bool IntBST::remove(int value){
 
        return true;
     }
-    
-    
-    
+
     return false; 
 }
