@@ -100,7 +100,7 @@ void IntBST::printInOrder(Node *n) const {
         return;
     }
     printInOrder(n->left);
-    cout << n->info;
+    cout << n->info << " ";
     printInOrder(n->right);
 }
 
@@ -115,7 +115,7 @@ void IntBST::printPostOrder(Node *n) const {
     }
     printPostOrder(n->left);
     printPostOrder(n->right);
-    cout << n->info;
+    cout << n->info << " ";
 }
 
 // return sum of values in tree
