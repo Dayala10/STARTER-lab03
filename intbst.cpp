@@ -43,13 +43,20 @@ bool IntBST::insert(int value) {
     }
 
     if(root->info > value){
+        if(root->left ==nullptr){
+            root->left = new Node(value);
+            return true;
+        }
         return insert(value, root->left);
     }
     else if(root->info < value){
+        if(root->right == nullptr){
+            root->right = new Node(value);
+        }
         return insert(value, root->right);
     }
 
-    return insert(value, root); //true or false, insertion
+    return false; //true or false, insertion
 }
 
 // recursive helper for insert (assumes n is never 0)
@@ -63,9 +70,9 @@ bool IntBST::insert(int value, Node *n) {
         if(n->left == nullptr){
             n->left = new Node(value);
             return true;
+
         }
-        
-        insert(value, n->left);
+        return insert(value, n->left);
     }
 
     if(value > n->info){
@@ -73,8 +80,7 @@ bool IntBST::insert(int value, Node *n) {
             n->right = new Node(value);
             return true;
         }
-        
-        insert(value, n->right);
+        return insert(value, n->right);
     }
 
 
@@ -91,7 +97,7 @@ void IntBST::printPreOrder(Node *n) const {
     if(n == nullptr){
         return;
     }
-    cout << n->info;
+    cout << n->info << " ";
 
     printPreOrder(n->left);
     printPreOrder(n->right);
@@ -304,6 +310,7 @@ bool IntBST::remove(int value){
         if(n->left == nullptr && n->right == nullptr){ //left child case
             delete n;
             n = nullptr;
+            root = nullptr;
             return true;
 
 
@@ -325,8 +332,9 @@ bool IntBST::remove(int value){
         }
 
         Node* p = getPredecessorNode(n->info);
-        n->info = p->info;
+        int temp = p->info;
         remove(p->info);
+        n->info = temp;
         return true;
     }
 
@@ -390,6 +398,44 @@ bool IntBST::remove(int value){
        delete p;
 
        return true;
+    }
+
+    else if(curr->left == nullptr && curr->right == nullptr){
+        Node* p = nullptr;
+        Node* n = root;
+
+        while(n != curr){
+            p = n;
+            if(curr->info < n->info){
+                n = n->left;
+            }
+            else{
+                n = n->right;
+            }
+        }
+
+        Node* c = nullptr;
+
+        if(curr->left != nullptr){ //curr parent
+            c = curr->left;
+        }
+        else{
+            c = curr->right;
+        }
+
+        if(p == nullptr){ //parent to child 
+            root = c;
+        }
+        else if(p->left ==curr){
+            p->left = c;
+        }
+        else{
+            p->right = c;
+        }
+        delete curr;
+        return true;
+
+
     }
 
     return false; 
